@@ -1,5 +1,6 @@
 import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
+import {CrisisCenterComponent} from './crisis-center/crisis-center.component'
 import {CrisisListComponent}   from './crisis-list.component';
 import {HeroListComponent}     from './heroes/hero-list.component';
 import {HeroDetailComponent}   from './heroes/hero-detail.component';
@@ -19,7 +20,12 @@ import {HeroService}           from './heroes/hero.service';
     directives: [ROUTER_DIRECTIVES]
 })
 @RouteConfig([
-    {path:'/crisis-center', name: 'CrisisCenter', component: CrisisListComponent},
+    { // Crisis Center child route
+        path: '/crisis-center/...',
+        name: 'CrisisCenter',
+        component: CrisisCenterComponent,
+        useAsDefault: true
+    },
     {path:'/heroes',        name: 'Heroes',       component: HeroListComponent},
     {path:'/hero/:id',      name: 'HeroDetail',   component: HeroDetailComponent}
 ])
