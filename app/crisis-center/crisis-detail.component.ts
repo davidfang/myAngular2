@@ -2,7 +2,7 @@ import {Component, OnInit} from 'angular2/core';
 import {Crisis, CrisisService} from './crisis.service';
 import {RouteParams, Router} from 'angular2/router';
 import {CanDeactivate, ComponentInstruction} from 'angular2/router';
-//import {DialogService} from '../dialog.service';
+import {DialogService} from '../dialog.service';
 @Component({
     template: `
   <div *ngIf="crisis">
@@ -27,8 +27,8 @@ export class CrisisDetailComponent implements OnInit, CanDeactivate {
     constructor(
         private _service: CrisisService,
         private _router: Router,
-        private _routeParams: RouteParams//,
-        //private _dialog: DialogService
+        private _routeParams: RouteParams,
+        private _dialog: DialogService
     ) { }
     ngOnInit() {
         let id = +this._routeParams.get('id');
@@ -48,7 +48,7 @@ export class CrisisDetailComponent implements OnInit, CanDeactivate {
         }
         // Otherwise ask the user with the dialog service and return its
         // promise which resolves to true or false when the user decides
-       // return this._dialog.confirm('Discard changes?');
+        return this._dialog.confirm('Discard changes?');
     }
     cancel() {
         this.editName = this.crisis.name;
@@ -59,7 +59,10 @@ export class CrisisDetailComponent implements OnInit, CanDeactivate {
         this.gotoCrises();
     }
     gotoCrises() {
-        // Like <a [routerLink]="['CrisisList']">Crisis Center</a
-        this._router.navigate(['CrisisList']);
+        let crisisId = this.crisis ? this.crisis.id : null;
+        // Pass along the hero id if available
+        // so that the CrisisListComponent can select that hero.
+        // Add a totally useless `foo` parameter for kicks.
+        this._router.navigate(['CrisisList', {id: crisisId, foo: 'foo'} ]);
     }
 }
